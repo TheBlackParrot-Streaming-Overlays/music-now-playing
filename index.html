@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" type="text/css" href="../shared/assets/fonts/fonts.css">
+	<link rel="stylesheet" type="text/css" href="../shared/assets/reset.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
+
+	<script defer type="text/javascript" src="../shared/libs/jquery.min.js"></script>
+	<script defer type="text/javascript" src="../shared/libs/jquery.marquee.min.js"></script>
+</head>
+<body>
+	<div id="testBar"></div>
+	<img id="scannable" src=""/>
+	<img id="artLoader" src="placeholder.png"/>
+
+	<div id="wrapper" class="left">
+		<div id="scannableWrapper">
+			<div id="scannableShadow">
+				<div id="scannableWrapperInside">
+					<div id="scannableBackground" class="showBoxShadow"></div>
+					<div id="scannableForeground"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="artWrapper">
+			<div id="artDoppleganger"></div>
+			<div id="artAnimationWrapper">
+				<div id="artOutline">
+					<div class="artContainer"></div>
+				</div>
+				<div id="artBG">
+					<div class="artContainer"></div>
+				</div>
+				<img id="art" src="placeholder.png"/>
+			</div>
+		</div>
+
+		<div id="detailsWrapper">
+			<div id="title">
+				<span id="titleString">Song Title</span>
+			</div>
+			<div id="secondaryWrap">
+				<div id="secondary">
+					<div id="artist">
+						<div id="artistString">
+							<div class="individualArtist showComma">
+								<div class="artistImage"></div>
+								<span class="artistName">First Artist</span>
+							</div>
+							<div class="individualArtist">
+								<div class="artistImage"></div>
+								<span class="artistName">Second Artist</span>
+							</div>
+						</div>
+					</div>
+					<div id="extraStringWrapper">
+						<div id="extraString">
+							<div class="" id="albumString">Some Album</div>
+							<div id="labelString">Music Label</div>
+							<div id="yearString">2024</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="bgWrapper">
+			<div id="artBGWrap">
+				<div class="artContainer"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="filterWrapper">
+		<svg xmlns="http://www.w3.org/2000/svg">
+			<filter id="outlineEffect" color-interpolation-filters="sRGB">
+				<feConvolveMatrix in="SourceAlpha" result="OutlineAlpha" divisor="1" order="1,1" kernelMatrix="1"/>
+				<feFlood flood-color="var(--overlayOutlineColor)" result="OutlineColor" />
+				<feComposite in="OutlineColor" in2="OutlineAlpha" operator="in" result="Outline" />
+
+				<feMerge>
+					<feMergeNode in="Outline"/>
+					<feMergeNode in="SourceGraphic"/>
+				</feMerge>
+			</filter>
+
+			<filter id="shadowEffect" color-interpolation-filters="sRGB">
+				<feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="var(--overlayShadowColor)"/>
+			</filter>
+
+			<filter id="outlineEffectColorReflect" color-interpolation-filters="sRGB">
+				<feConvolveMatrix in="SourceAlpha" result="OutlineAlpha" divisor="1" order="1,1" kernelMatrix="1"/>
+				<feFlood id="changeThisForScannableColorReflect" flood-color="var(--scannable-background-color)" result="OutlineColor" />
+				<feComposite in="OutlineColor" in2="OutlineAlpha" operator="in" result="Outline" />
+
+				<feMerge>
+					<feMergeNode in="Outline"/>
+					<feMergeNode in="SourceGraphic"/>
+				</feMerge>
+			</filter>
+
+			<filter id="blankEffect"></filter>
+		</svg>
+	</div>
+
+	<script defer type="text/javascript" src="main.js"></script>
+	<script defer type="text/javascript" src="funcs.js"></script>
+	<script defer type="text/javascript" src="settings.js"></script>
+	<script defer type="text/javascript" src="external_music.js"></script>
+	<script defer type="text/javascript" src="../shared/libs/bg_settings.js"></script>
+	<script type="text/javascript">
+		window.addEventListener("load", function() {
+			postToSettingsChannel("SpotifyOverlayExists", {
+				version: overlayRevision,
+				timestamp: overlayRevisionTimestamp
+			});
+		});
+	</script>
+</body>
+</html>
