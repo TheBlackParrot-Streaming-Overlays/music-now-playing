@@ -172,6 +172,25 @@ const musicFuncs = {
 				wasPreviouslyPlaying = false;
 			}
 		}
+
+		if(data.playing && !currentSong.isPlaying) {
+			// previously paused, now playing
+			try {
+				let darkColor = currentSong.album.art.colors.dark;
+				let lightColor = currentSong.album.art.colors.light;
+
+				if(localStorage.getItem("setting_spotify_ensureColorIsBrightEnough") === "true") {
+					darkColor = ensureSafeColor(darkColor);
+					lightColor = ensureSafeColor(lightColor);
+				}
+
+				localStorage.setItem("art_darkColor", darkColor);
+				localStorage.setItem("art_lightColor", lightColor);
+			} catch(err) {
+				console.error(err);
+			}
+		}
+
 		currentSong.isPlaying = data.playing;
 
 		updateProgress();
