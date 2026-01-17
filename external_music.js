@@ -4,6 +4,11 @@ const musicFuncs = {
 	track: function(data) {
 		cycleAlbumArtist("artist");
 
+		if(!data) {
+			// what the fuck
+			return;
+		}
+
 		if("uri" in data) {
 			if(data.uri.length === 36 && data.uri.indexOf("spotify:") === 0) {
 				fetchScannable(data);
@@ -74,8 +79,10 @@ const musicFuncs = {
 				
 				$("#albumString").text(data.album.name);
 				
-				if(data.labels.length) {
-					$("#labelString").text(data.labels.join(", "));
+				if("labels" in data) {
+					if(data.labels.length) {
+						$("#labelString").text(data.labels.join(", "));
+					}
 				}
 
 				if(data.album.year) {
@@ -97,16 +104,24 @@ const musicFuncs = {
 					}
 				}*/
 
-				let darkColor = data.album.art.colors.dark;
-				let lightColor = data.album.art.colors.light;
+				try {
+					let darkColor = data.album.art.colors.dark;
+					let lightColor = data.album.art.colors.light;
 
-				if(localStorage.getItem("setting_spotify_ensureColorIsBrightEnough") === "true") {
-					darkColor = ensureSafeColor(darkColor);
-					lightColor = ensureSafeColor(lightColor);
+					if(localStorage.getItem("setting_spotify_ensureColorIsBrightEnough") === "true") {
+						darkColor = ensureSafeColor(darkColor);
+						lightColor = ensureSafeColor(lightColor);
+					}
+
+					$(":root").get(0).style.setProperty("--colorDark", darkColor);
+					$(":root").get(0).style.setProperty("--colorLight", lightColor);
+				} catch(err) {
+					if(err instanceof TypeError) {
+						// ignore
+					} else {
+						console.error(err);
+					}
 				}
-
-				$(":root").get(0).style.setProperty("--colorDark", darkColor);
-				$(":root").get(0).style.setProperty("--colorLight", lightColor);
 
 				$("#detailsWrapper").addClass("fadeIn")
 				$("#detailsWrapper").removeClass("fadeOut");
@@ -130,8 +145,13 @@ const musicFuncs = {
 
 		setTimeout(function() {
 			$("#artAnimationWrapper, #bgWrapper .artContainer").fadeOut(timespans.medium, function() {
-				$("#art, #artLoader").attr("src", data.album.art.data);
-				rootCSS().setProperty("--art-url", `url('${data.album.art.data}')`);
+				try {
+					$("#art, #artLoader").attr("src", data.album.art.data);
+					rootCSS().setProperty("--art-url", `url('${data.album.art.data}')`);
+				} catch {
+					$("#art, #artLoader").attr("src", "placeholder.png");
+					rootCSS().setProperty("--art-url", `url('placeholder.png')`);
+				}
 
 				$("#artLoader").one({
 					load: function() {
@@ -173,21 +193,23 @@ const musicFuncs = {
 			}
 		}
 
-		if(data.playing && !currentSong.isPlaying) {
-			// previously paused, now playing
-			try {
-				let darkColor = currentSong.album.art.colors.dark;
-				let lightColor = currentSong.album.art.colors.light;
+		if(data.playing && !currentSong.isPlaying && "album" in currentSong) {
+			if("art" in currentSong.album) {
+				// previously paused, now playing
+				try {
+					let darkColor = currentSong.album.art.colors.dark;
+					let lightColor = currentSong.album.art.colors.light;
 
-				if(localStorage.getItem("setting_spotify_ensureColorIsBrightEnough") === "true") {
-					darkColor = ensureSafeColor(darkColor);
-					lightColor = ensureSafeColor(lightColor);
+					if(localStorage.getItem("setting_spotify_ensureColorIsBrightEnough") === "true") {
+						darkColor = ensureSafeColor(darkColor);
+						lightColor = ensureSafeColor(lightColor);
+					}
+
+					localStorage.setItem("art_darkColor", darkColor);
+					localStorage.setItem("art_lightColor", lightColor);
+				} catch(err) {
+					console.error(err);
 				}
-
-				localStorage.setItem("art_darkColor", darkColor);
-				localStorage.setItem("art_lightColor", lightColor);
-			} catch(err) {
-				console.error(err);
 			}
 		}
 

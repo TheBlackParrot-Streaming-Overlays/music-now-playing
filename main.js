@@ -49,7 +49,15 @@ function determineScannableFGColor(data) {
 	if(currentSong.uri === null) {
 		return;
 	}
-	if(!("colors" in currentSong) && !("colors" in currentSong.album.art)) {
+	if("album" in currentSong) {
+		if("art" in currentSong.album) {
+			if(!("colors" in currentSong.album.art) && !("colors" in currentSong)) {
+				return;
+			}
+		} else {
+			return;
+		}
+	} else {
 		return;
 	}
 
