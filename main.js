@@ -376,7 +376,7 @@ var prevPerc = -1;
 
 function updateProgress() {
 	let perc;
-	if(localStorage.getItem("setting_mus_overrideSpotify") === "false") {
+	if(localStorage.getItem("setting_mus_dataService") === "spotify") {
 		perc = ((elapsed + (Date.now() - lastUpdate)) / currentSong.duration);
 	} else {
 		perc = elapsed / currentSong.duration;

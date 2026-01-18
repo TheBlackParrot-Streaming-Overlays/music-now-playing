@@ -203,7 +203,7 @@ const settingUpdaters = {
 		rootCSS().setProperty("--box-shadow-effects-inset", `${value}px`);
 	},
 	progressInterval: function(value) {
-		if(localStorage.getItem("setting_mus_overrideSpotify") === "true") {
+		if(localStorage.getItem("setting_mus_dataService") !== "spotify") {
 			return;
 		}
 		
