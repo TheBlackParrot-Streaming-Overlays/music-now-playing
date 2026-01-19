@@ -477,10 +477,12 @@ function cycleAlbumArtist(which, noAnimations) {
 		$("#artist").fadeOut(fadeDuration, function() {
 			$("#extraStringWrapper").fadeIn(fadeDuration);
 
-			if(localStorage.getItem("setting_spotify_showLabel") === "true" && currentSong.labels.length) {
-				$("#labelString").show();
-			} else {
-				$("#labelString").hide();
+			if("labels" in currentSong) {
+				if(localStorage.getItem("setting_spotify_showLabel") === "true" && currentSong.labels.length) {
+					$("#labelString").show();
+				} else {
+					$("#labelString").hide();
+				}
 			}
 
 			if(localStorage.getItem("setting_spotify_showYear") === "true") {
