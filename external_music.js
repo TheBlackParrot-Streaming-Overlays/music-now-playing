@@ -77,7 +77,7 @@ const musicFuncs = {
 					}
 				}
 				
-				$("#albumString").text(data.album.name);
+				$("#albumString").text(data.album.name.length > 0 ? data.album.name : "(unknown album)");
 				
 				if("labels" in data) {
 					if(data.labels.length) {
