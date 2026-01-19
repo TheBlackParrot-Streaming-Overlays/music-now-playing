@@ -483,6 +483,8 @@ function cycleAlbumArtist(which, noAnimations) {
 				} else {
 					$("#labelString").hide();
 				}
+			} else {
+				$("#labelString").hide();
 			}
 
 			if(localStorage.getItem("setting_spotify_showYear") === "true") {
