@@ -88,6 +88,9 @@ const musicFuncs = {
 				if(data.album.year) {
 					$("#yearString").show();
 					$("#yearString").text(data.album.year);
+				} else if(data.album.released) {
+					$("#yearString").show();
+					$("#yearString").text(data.album.released);
 				} else {
 					$("#yearString").hide();
 				}
