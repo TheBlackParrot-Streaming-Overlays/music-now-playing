@@ -115,6 +115,9 @@ const musicFuncs = {
 					let darkColor = data.album.art.colors.dark;
 					let lightColor = data.album.art.colors.light;
 
+					localStorage.setItem("art_darkColor", darkColor);
+					localStorage.setItem("art_lightColor", lightColor);
+
 					if(localStorage.getItem("setting_spotify_ensureColorIsBrightEnough") === "true") {
 						darkColor = ensureSafeColor(darkColor);
 						lightColor = ensureSafeColor(lightColor);
