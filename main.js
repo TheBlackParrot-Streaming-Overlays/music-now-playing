@@ -92,14 +92,20 @@ function determineScannableFGColor(data) {
 }
 
 function showStuff() {
+	updateMarquee();
+
+	if($("#detailsWrapper").hasClass("fadeIn")) {
+		// erm
+		console.warn("show stuff called, but we're already visible?");
+		return;
+	}
+
 	const enableAnimations = (localStorage.getItem("setting_spotify_enableAnimations") === "true");
 	const timespans = {
 		small: (enableAnimations ? 100 : 0),
 		medium: (enableAnimations ? 250 : 0),
 		large: (enableAnimations ? 500 : 0)
 	};
-
-	updateMarquee();
 
 	$("#detailsWrapper").addClass("fadeIn");
 	$("#detailsWrapper").removeClass("fadeOut");
@@ -121,6 +127,12 @@ function showStuff() {
 	}, timespans.large);
 }
 function hideStuff() {
+	if($("#detailsWrapper").hasClass("fadeOut")) {
+		// erm
+		console.warn("hide stuff called, but we're already invisible?");
+		return;
+	}
+
 	const enableAnimations = (localStorage.getItem("setting_spotify_enableAnimations") === "true");
 	const timespans = {
 		small: (enableAnimations ? 100 : 0),
