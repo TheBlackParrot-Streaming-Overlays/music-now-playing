@@ -230,6 +230,14 @@ const musicFuncs = {
 		currentSong.isPlaying = data.playing;
 
 		updateProgress();
+	},
+
+	scannable: function(data) {
+		currentSong.scannable = data;
+		
+		if(localStorage.getItem("setting_spotify_overrideScannable") === "true") {
+			setScannable(data, currentSong);
+		}
 	}
 };
 
