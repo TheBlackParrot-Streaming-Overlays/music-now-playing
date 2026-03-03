@@ -9,22 +9,22 @@ const musicFuncs = {
 			return;
 		}
 
-		if("uri" in data) {
-			if(data.uri) { // wtf
-				if(data.uri.length === 36 && data.uri.indexOf("spotify:") === 0) {
-					fetchScannable(data);
+		if(localStorage.getItem("setting_spotify_overrideScannable") === "true" && "scannable" in data) {
+			setScannable(data.scannable, data);
+		} else {
+			if("uri" in data) {
+				if(data.uri) { // wtf
+					if(data.uri.length === 36 && data.uri.indexOf("spotify:") === 0) {
+						fetchScannable(data);
+					} else {
+						$("#scannableWrapper").hide();
+					}
 				} else {
 					$("#scannableWrapper").hide();
 				}
 			} else {
 				$("#scannableWrapper").hide();
 			}
-		} else {
-			$("#scannableWrapper").hide();
-		}
-
-		if(localStorage.getItem("setting_spotify_overrideScannable") === "true" && "scannable" in data) {
-			setScannable(data.scannable, data);
 		}
 
 		if(localStorage.getItem("setting_spotify_enableArt") === "true") { $("#artWrapper").show(); }
