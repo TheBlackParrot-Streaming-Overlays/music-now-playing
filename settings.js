@@ -1,4 +1,4 @@
-const overlayRevision = 32;
+const overlayRevision = 33;
 const overlayRevisionTimestamp = 1772129436939;
 
 const settingsChannel = new BroadcastChannel("settings_overlay");
@@ -394,9 +394,8 @@ const settingUpdaters = {
 	},
 
 	scannableHeight: function(value) {
-		const heightRatio = 640/160;
 		rootCSS().setProperty("--scannable-height", `${value}px`);
-		rootCSS().setProperty("--scannable-width", `${value * heightRatio}px`);
+		rootCSS().setProperty("--scannable-width", `calc(${value}px * var(--scannable-height-ratio))`);
 	},
 
 	lineHeight: function(value) {
@@ -620,6 +619,23 @@ const settingUpdaters = {
 		let style = document.head.appendChild(document.createElement("style"));
 		style.setAttribute("id", "fromStringStyle");
 		style.innerHTML = `:root { --album-from-string: "${value} "; } #albumString:before { content: var(--album-from-string); }`;
+	},
+
+	overrideScannable: function(value) {
+		rootCSS().setProperty("--scannable-height-ratio", (value === "true" ? "var(--scannable-overridden-height-ratio)" : "var(--scannable-default-height-ratio)"));
+		rootCSS().setProperty("--scannable-background-size", (value === "true" ? "contain" : "cover"));
+	},
+
+	scannableMargin: function(value) {
+		rootCSS().setProperty("--scannable-margin", `${value}px`);
+	},
+
+	qrCodeGlyph: function(value) {
+		rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${$("#scannable")[0].naturalWidth} / ${$("#scannable")[0].naturalHeight})`);
+	},
+
+	applyScannableBorderRadiusToContent: function(value) {
+		rootCSS().setProperty("--scannable-content-border-radius", (value === "true" ? "var(--scannable-border-radius)" : "unset"));
 	}
 };
 

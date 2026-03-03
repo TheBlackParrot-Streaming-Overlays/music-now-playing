@@ -129,8 +129,6 @@
 	--artist-gradient-color: #FFF;
 	--artist-gradient: linear-gradient(var(--artist-gradient-angle), var(--artist-gradient-color) 20%, transparent 100%);
 
-	--scannable-width: 224px;
-
 	--box-shadow-effects-offset-x: 0px;
 	--box-shadow-effects-offset-y: 8px;
 	--box-shadow-effects-blur-radius: 9px;
@@ -152,6 +150,9 @@
 	--scannable-border-radius: 8px;
 	--art-border-radius: 4px;
 
+	--scannable-default-height-ratio: calc(640 / 160);
+	--scannable-overridden-height-ratio: var(--scannable-default-height-ratio);
+	--scannable-height-ratio: var(--scannable-default-height-ratio);
 	--scannable-gradient-angle: 170deg;
 	--scannable-gradient-color-start: #FFF;
 	--scannable-gradient-percent-start: 10%;
@@ -160,11 +161,18 @@
 	--scannable-gradient: linear-gradient(var(--scannable-gradient-angle), var(--scannable-gradient-color-start) var(--scannable-gradient-percent-start), var(--scannable-gradient-color-end) var(--scannable-gradient-percent-end));
 	--scannable-gradient-actual: var(--scannable-gradient);
 	--scannable-gradient-blend-mode: soft-light;
+	--scannable-width: 224px;
 	--scannable-height: 52px;
+	--scannable-height-actual: calc(var(--scannable-height) - (var(--scannable-margin) * 2));
+	--scannable-width-actual: calc(var(--scannable-width) - (var(--scannable-margin) * 2));
 	--scannable-foreground-color: #FFFFFFFF;
 	--scannable-background-color: #333333FF;
 	--scannable-mix-mode: screen;
 	--scannable-filters: unset;
+	--scannable-background-size: cover;
+	--scannable-background-position: center;
+	--scannable-margin: 0px;
+	--scannable-content-border-radius: unset;
 
 	--scannable-outline-style: solid;
 	--scannable-outline-size: 1px;
@@ -470,16 +478,19 @@ body {
 */
 
 #scannableForeground {
-	width: var(--scannable-width);
-	height: var(--scannable-height);
+	width: var(--scannable-width-actual);
+	height: var(--scannable-height-actual);
+	margin: var(--scannable-margin);
 	position: absolute;
 	z-index: 2;
 	background-image: var(--scannable-image);
-	background-size: cover;
+	background-size: var(--scannable-background-size);
+	background-position: var(--scannable-background-position);
 	background-repeat: no-repeat;
 	filter: var(--scannable-filters);
 	border: var(--scannable-outline-actual);
 	border-color: transparent !important;
+	border-radius: var(--scannable-content-border-radius);
 }
 
 #scannable {

@@ -23,6 +23,10 @@ const musicFuncs = {
 			$("#scannableWrapper").hide();
 		}
 
+		if(localStorage.getItem("setting_spotify_overrideScannable") === "true" && "scannable" in data) {
+			setScannable(data.scannable, data);
+		}
+
 		if(localStorage.getItem("setting_spotify_enableArt") === "true") { $("#artWrapper").show(); }
 
 		const enableAnimations = (localStorage.getItem("setting_spotify_enableAnimations") === "true");

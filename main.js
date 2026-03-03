@@ -201,15 +201,28 @@ async function fetchScannable(data) {
 	const serializer = new XMLSerializer();
 	const svg = btoa(serializer.serializeToString(svgDOM));
 
+	setScannable(svg, data);
+}
+
+function setScannable(svg, trackData) {
+	const enableAnimations = (localStorage.getItem("setting_spotify_enableAnimations") === "true");
+	const timespans = {
+		small: (enableAnimations ? 100 : 0),
+		medium: (enableAnimations ? 250 : 0),
+		large: (enableAnimations ? 500 : 0)
+	};
+
 	$("#scannable")[0].setAttribute("src", `data:image/svg+xml;base64,${svg}`);
 	rootCSS().setProperty("--scannable-image", `url('data:image/svg+xml;base64,${svg}')`);
 
 	$("#scannable").one({
 		load: function() {
+			rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${$("#scannable")[0].naturalWidth} / ${$("#scannable")[0].naturalHeight})`);
+			
 			if(localStorage.getItem("setting_spotify_enableScannable") === "true") {
 				$("#scannableWrapper").show();
 			}
-			determineScannableFGColor(data);
+			determineScannableFGColor(trackData);
 			$("#scannableShadow").fadeIn(timespans.large);
 		},
 		error: function() {
@@ -369,7 +382,11 @@ const spotifyFuncs = {
 
 		setTimeout(async function() {
 			$("#scannableShadow").fadeOut(timespans.medium, async function() {
-				await fetchScannable(data);
+				if(localStorage.getItem("setting_spotify_overrideScannable") === "true" && "scannable" in data) {
+					setScannable(data.scannable, data);
+				} else {
+					await fetchScannable(data);
+				}
 			});
 		}, timespans.large)
 
