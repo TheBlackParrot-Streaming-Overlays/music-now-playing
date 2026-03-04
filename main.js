@@ -217,7 +217,10 @@ function setScannable(svg, trackData) {
 
 	$("#scannable").one({
 		load: function() {
-			rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${$("#scannable")[0].naturalWidth} / ${$("#scannable")[0].naturalHeight})`);
+			let width = $("#scannable")[0].naturalWidth ? $("#scannable")[0].naturalWidth : localStorage.getItem("setting_spotify_scannableHeight");
+			let height = $("#scannable")[0].naturalHeight ? $("#scannable")[0].naturalHeight : localStorage.getItem("setting_spotify_scannableHeight");
+
+			rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${width} / ${height})`);
 			
 			if(localStorage.getItem("setting_spotify_enableScannable") === "true") {
 				$("#scannableWrapper").show();
@@ -226,6 +229,11 @@ function setScannable(svg, trackData) {
 			$("#scannableShadow").fadeIn(timespans.large);
 		},
 		error: function() {
+			let width = localStorage.getItem("setting_spotify_scannableHeight");
+			let height = localStorage.getItem("setting_spotify_scannableHeight");
+
+			rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${width} / ${height})`);
+
 			console.log("failed to fetch scannable, image loading error");
 			$("#scannableWrapper").hide();
 		}

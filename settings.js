@@ -631,7 +631,10 @@ const settingUpdaters = {
 	},
 
 	qrCodeGlyph: function(value) {
-		rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${$("#scannable")[0].naturalWidth} / ${$("#scannable")[0].naturalHeight})`);
+		let width = $("#scannable")[0].naturalWidth ? $("#scannable")[0].naturalWidth : localStorage.getItem("setting_spotify_scannableHeight");
+		let height = $("#scannable")[0].naturalHeight ? $("#scannable")[0].naturalHeight : localStorage.getItem("setting_spotify_scannableHeight");
+
+		rootCSS().setProperty("--scannable-overridden-height-ratio", `calc(${width} / ${height})`);
 	},
 
 	applyScannableBorderRadiusToContent: function(value) {

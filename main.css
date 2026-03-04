@@ -422,7 +422,17 @@ body {
 	height: calc(var(--scannable-height) + var(--scannable-outline-offset));
 	border-radius: var(--scannable-border-radius);
 	padding: var(--scannable-outline-size);
+
+	/* the most cursed thing ever */
+	margin: calc(var(--scannable-width) * -1);
 }
+.left #scannableWrapper {
+	padding-left: var(--scannable-width);
+}
+.right #scannableWrapper {
+	padding-right: var(--scannable-width);
+}
+/* end the most cursed thing ever */
 
 #scannableBackground {
 	display: block;
