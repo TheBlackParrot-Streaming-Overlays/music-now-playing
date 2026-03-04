@@ -21,7 +21,9 @@
 			<div id="scannableShadow">
 				<div id="scannableWrapperInside">
 					<div id="scannableBackground" class="showBoxShadow"></div>
-					<div id="scannableForeground"></div>
+					<div id="scannableForegroundInside">
+						<div id="scannableForeground"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -92,15 +94,19 @@
 				<feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="var(--overlayShadowColor)"/>
 			</filter>
 
-			<filter id="outlineEffectColorReflect" color-interpolation-filters="sRGB">
+			<filter id="outlineEffectScannable" color-interpolation-filters="sRGB">
 				<feConvolveMatrix in="SourceAlpha" result="OutlineAlpha" divisor="1" order="1,1" kernelMatrix="1"/>
-				<feFlood id="changeThisForScannableColorReflect" flood-color="var(--scannable-background-color)" result="OutlineColor" />
+				<feFlood flood-color="var(--scannableOutlineColor)" result="OutlineColor" />
 				<feComposite in="OutlineColor" in2="OutlineAlpha" operator="in" result="Outline" />
 
 				<feMerge>
 					<feMergeNode in="Outline"/>
 					<feMergeNode in="SourceGraphic"/>
 				</feMerge>
+			</filter>
+
+			<filter id="shadowEffectScannable" color-interpolation-filters="sRGB">
+				<feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="var(--scannableShadowColor)"/>
 			</filter>
 
 			<filter id="blankEffect"></filter>

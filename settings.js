@@ -147,19 +147,33 @@ const settingUpdaters = {
 		rootCSS().setProperty("--overlayShadowColor", value);
 	},
 	shadowXOffset: function(value) {
-		$("feDropShadow").attr("dx", value);
+		$("#shadowEffect feDropShadow").attr("dx", value);
 	},
 	shadowYOffset: function(value) {
-		$("feDropShadow").attr("dy", value);
+		$("#shadowEffect feDropShadow").attr("dy", value);
 	},
 	shadowBlurRadius: function(value) {
-		$("feDropShadow").attr("stdDeviation", value);
+		$("#shadowEffect feDropShadow").attr("stdDeviation", value);
 	},
+
+	shadowColorScannable: function(value) {
+		rootCSS().setProperty("--scannableShadowColor", value);
+	},
+	shadowXOffsetScannable: function(value) {
+		$("#shadowEffectScannable feDropShadow").attr("dx", value);
+	},
+	shadowYOffsetScannable: function(value) {
+		$("#shadowEffectScannable feDropShadow").attr("dy", value);
+	},
+	shadowBlurRadiusScannable: function(value) {
+		$("#shadowEffectScannable feDropShadow").attr("stdDeviation", value);
+	},
+
 	outlineColor: function(value) {
 		rootCSS().setProperty("--overlayOutlineColor", value);
 	},
 	outlineDivisor: function(value) {
-		$("feConvolveMatrix").attr("divisor", value);
+		$("#outlineEffect feConvolveMatrix").attr("divisor", value);
 	},
 	outlineOrder: function(value) {
 		value = parseInt(value);
@@ -170,14 +184,39 @@ const settingUpdaters = {
 			matrix = new Array(Math.pow(value, 2)).fill(1);
 		}
 
-		$("feConvolveMatrix").attr("order", `${value},${value}`);
-		$("feConvolveMatrix").attr("kernelMatrix", matrix.join(" "));
+		$("#outlineEffect feConvolveMatrix").attr("order", `${value},${value}`);
+		$("#outlineEffect feConvolveMatrix").attr("kernelMatrix", matrix.join(" "));
 	},
 	outlineStripCorners: function() {
 		settingUpdaters.outlineOrder(localStorage.getItem("setting_spotify_outlineOrder"));
 	},
-	overlayOutlineThreshold: function() {
-		settingUpdaters.overlayOutlineOrder(localStorage.getItem("setting_spotify_outlineOrder"));
+	outlineThreshold: function() {
+		settingUpdaters.outlineOrder(localStorage.getItem("setting_spotify_outlineOrder"));
+	},
+
+	outlineColorScannable: function(value) {
+		rootCSS().setProperty("--scannableOutlineColor", value);
+	},
+	outlineDivisorScannable: function(value) {
+		$("#outlineEffectScannable feConvolveMatrix").attr("divisor", value);
+	},
+	outlineOrderScannable: function(value) {
+		value = parseInt(value);
+		let matrix;
+		if(value >= 3 && localStorage.getItem("setting_spotify_outlineStripCornersScannable") === "true") {
+			matrix = getSmoothMatrix(value, parseFloat(localStorage.getItem("setting_spotify_outlineThresholdScannable")));
+		} else {
+			matrix = new Array(Math.pow(value, 2)).fill(1);
+		}
+
+		$("#outlineEffectScannable feConvolveMatrix").attr("order", `${value},${value}`);
+		$("#outlineEffectScannable feConvolveMatrix").attr("kernelMatrix", matrix.join(" "));
+	},
+	outlineStripCornersScannable: function() {
+		settingUpdaters.outlineOrderScannable(localStorage.getItem("setting_spotify_outlineOrderScannable"));
+	},
+	outlineThresholdScannable: function(value) {
+		settingUpdaters.outlineOrderScannable(localStorage.getItem("setting_spotify_outlineOrderScannable"));
 	},
 
 	enableBoxShadowEffects: function(value) {
@@ -442,7 +481,7 @@ const settingUpdaters = {
 
 	enableShadowEffectsScannable: function(value) {
 		if(value === "true") {
-			rootCSS().setProperty("--shadowStuffScannable", "url(#shadowEffect)");
+			rootCSS().setProperty("--shadowStuffScannable", "url(#shadowEffectScannable)");
 		} else {
 			rootCSS().setProperty("--shadowStuffScannable", "url(#blankEffect)");
 		}
@@ -450,23 +489,32 @@ const settingUpdaters = {
 
 	enableOutlineEffectsScannable: function(value) {
 		if(value === "true") {
-			rootCSS().setProperty("--outlineStuffScannable", "url(#outlineEffectColorReflect)");
+			rootCSS().setProperty("--outlineStuffScannable", "url(#outlineEffectScannable)");
 		} else {
 			rootCSS().setProperty("--outlineStuffScannable", "url(#blankEffect)");
 		}
+		/*if(value === "true") {
+			rootCSS().setProperty("--outlineStuffScannable", "url(#outlineEffectColorReflect)");
+		} else {
+			rootCSS().setProperty("--outlineStuffScannable", "url(#blankEffect)");
+		}*/
 	},
 
 	scannableFGDark: function(value) {
 		if(value === "true") {
 			rootCSS().setProperty("--scannable-mix-mode", 'multiply');
+			rootCSS().setProperty("--scannable-filters", 'invert(1)');
+			/*rootCSS().setProperty("--scannable-mix-mode", 'multiply');
 			if(localStorage.getItem("setting_spotify_outlineColorReflectsScannable") === "true") {
 				rootCSS().setProperty("--scannable-filters", 'invert(1) var(--outlineStuffScannable)');
 			} else {
 				rootCSS().setProperty("--scannable-filters", 'invert(1)');
-			}
+			}*/
 		} else {
-			rootCSS().setProperty("--scannable-mix-mode", 'screen');
-			rootCSS().setProperty("--scannable-filters", 'var(--outlineStuffScannable) var(--shadowStuffScannable)');
+			rootCSS().setProperty("--scannable-mix-mode", 'add');
+			rootCSS().setProperty("--scannable-filters", 'unset');
+			/*rootCSS().setProperty("--scannable-mix-mode", 'screen');
+			rootCSS().setProperty("--scannable-filters", 'var(--outlineStuffScannable) var(--shadowStuffScannable)');*/
 		}
 	},
 
@@ -579,13 +627,7 @@ const settingUpdaters = {
 	},
 
 	outlineColorReflectsScannable: function(value) {
-		if(value === "true") {
-			$("#changeThisForScannableColorReflect").attr("flood-color", "var(--scannable-background-color)");
-		} else {
-			$("#changeThisForScannableColorReflect").attr("flood-color", "var(--overlayOutlineColor)");
-		}
-
-		settingUpdaters["scannableFGDark"](localStorage.getItem("setting_spotify_scannableFGDark"));
+		$("#outlineEffectScannable feFlood").attr("flood-color", (value === "true" ? "var(--scannable-background-color)" : "var(--scannableOutlineColor)"));
 	},
 
 	showArtistImages: function(value) {

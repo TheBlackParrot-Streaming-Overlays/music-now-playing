@@ -94,11 +94,13 @@
 :root {
 	--scroll-direction: scroll;
 	--shadowStuff: url(#shadowEffect);
-	--shadowStuffScannable: url(#shadowEffect);
+	--shadowStuffScannable: url(#shadowEffectScannable);
 	--overlayShadowColor: #000000;
 	--outlineStuff: url(#outlineEffect);
-	--outlineStuffScannable: url(#outlineEffectColorReflect);
+	--outlineStuffScannable: url(#outlineEffectScannable);
 	--overlayOutlineColor: #000000;
+	--scannableShadowColor: #000000;
+	--scannableOutlineColor: #000000;
 
 	--effects: var(--outlineStuff) var(--shadowStuff);
 
@@ -169,6 +171,7 @@
 	--scannable-background-color: #333333FF;
 	--scannable-mix-mode: screen;
 	--scannable-filters: unset;
+	--scannable-effect-filters: var(--outlineStuffScannable) var(--shadowStuffScannable);
 	--scannable-background-size: cover;
 	--scannable-background-position: center;
 	--scannable-margin: 0px;
@@ -501,6 +504,12 @@ body {
 	border: var(--scannable-outline-actual);
 	border-color: transparent !important;
 	border-radius: var(--scannable-content-border-radius);
+}
+
+#scannableForegroundInside {
+	filter: var(--scannable-effect-filters);
+	position: absolute;
+	z-index: 2;
 }
 
 #scannable {
