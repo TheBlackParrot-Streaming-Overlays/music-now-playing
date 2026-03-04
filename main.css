@@ -139,6 +139,7 @@
 
 	--box-shadow-effects: var(--box-shadow-effects-offset-x) var(--box-shadow-effects-offset-y) var(--box-shadow-effects-blur-radius) var(--box-shadow-effects-inset) var(--box-shadow-effects-color);
 	--box-shadow-effects-actual: var(--box-shadow-effects);
+	--scannable-box-shadow-effects-actual: var(--box-shadow-effects);
 
 	--art-size: 52px;
 	--art-outline-size: 2px;
@@ -457,6 +458,9 @@ body {
 
 .showBoxShadow {
 	box-shadow: var(--box-shadow-effects-actual);
+}
+.showBoxShadowScannable {
+	box-shadow: var(--scannable-box-shadow-effects-actual);
 }
 
 #scannableBackground:after {

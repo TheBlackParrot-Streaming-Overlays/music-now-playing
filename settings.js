@@ -226,6 +226,13 @@ const settingUpdaters = {
 			rootCSS().setProperty("--box-shadow-effects-actual", "none");
 		}
 	},
+	enableBoxShadowEffectsScannable: function(value) {
+		if(value === "true") {
+			rootCSS().setProperty("--scannable-box-shadow-effects-actual", "var(--box-shadow-effects)");
+		} else {
+			rootCSS().setProperty("--scannable-box-shadow-effects-actual", "none");
+		}
+	},
 	boxShadowColor: function(value) {
 		rootCSS().setProperty("--box-shadow-effects-color", value);
 	},
