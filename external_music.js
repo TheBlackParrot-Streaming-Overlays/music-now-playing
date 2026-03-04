@@ -9,24 +9,6 @@ const musicFuncs = {
 			return;
 		}
 
-		if(localStorage.getItem("setting_spotify_overrideScannable") === "true" && "scannable" in data) {
-			setScannable(data.scannable, data);
-		} else {
-			if("uri" in data) {
-				if(data.uri) { // wtf
-					if(data.uri.length === 36 && data.uri.indexOf("spotify:") === 0) {
-						fetchScannable(data);
-					} else {
-						$("#scannableWrapper").hide();
-					}
-				} else {
-					$("#scannableWrapper").hide();
-				}
-			} else {
-				$("#scannableWrapper").hide();
-			}
-		}
-
 		if(localStorage.getItem("setting_spotify_enableArt") === "true") { $("#artWrapper").show(); }
 
 		const enableAnimations = (localStorage.getItem("setting_spotify_enableAnimations") === "true");
@@ -179,6 +161,29 @@ const musicFuncs = {
 				});
 			});
 		}, timespans.medium);
+
+		setTimeout(async function() {
+			$("#scannableShadow").fadeOut(timespans.medium, async function() {
+				console.log(data);
+				if(localStorage.getItem("setting_spotify_overrideScannable") === "true" && "scannable" in data) {
+					setScannable(data.scannable, data);
+				} else {
+					if("uri" in data) {
+						if(data.uri) { // wtf
+							if(data.uri.length === 36 && data.uri.indexOf("spotify:") === 0) {
+								fetchScannable(data);
+							} else {
+								$("#scannableWrapper").hide();
+							}
+						} else {
+							$("#scannableWrapper").hide();
+						}
+					} else {
+						$("#scannableWrapper").hide();
+					}
+				}
+			});
+		}, timespans.large);
 
 		setTimeout(function() {
 			// i'm lazy, there's some animation conflict here and it is 6 in the morning and i am tired
