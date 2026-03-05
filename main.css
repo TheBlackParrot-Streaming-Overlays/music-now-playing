@@ -106,6 +106,7 @@
 
 	--wrapper-margin: 12px;
 	--element-spacing: 12px;
+	--horizontal-offset: 0px;
 
 	--details-line-height: 24px;
 	--details-order: column;
@@ -225,20 +226,22 @@ body {
 	overflow: hidden;
 }
 
-.left {
-	direction: ltr;
-}
-.right {
-	direction: rtl;
-}
-
 #wrapper {
 	display: flex;
 	flex-direction: row;
 	width: calc(100vw - (var(--wrapper-margin) * 2));
-	padding: var(--wrapper-margin);
 	padding-bottom: var(--wrapper-padding-bottom);
 	align-items: center;
+}
+.left {
+	padding: var(--wrapper-margin);
+	padding-left: calc(var(--horizontal-offset) + var(--wrapper-margin));
+	direction: ltr;
+}
+.right {
+	padding: var(--wrapper-margin);
+	padding-right: calc(var(--horizontal-offset) + var(--wrapper-margin));
+	direction: rtl;
 }
 #detailsWrapper {
 	display: flex;

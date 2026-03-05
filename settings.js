@@ -688,6 +688,10 @@ const settingUpdaters = {
 
 	applyScannableBorderRadiusToContent: function(value) {
 		rootCSS().setProperty("--scannable-content-border-radius", (value === "true" ? "var(--scannable-border-radius)" : "unset"));
+	},
+
+	horizontalOffset: function(value) {
+		rootCSS().setProperty("--horizontal-offset", `${value}px`);
 	}
 };
 
