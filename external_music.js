@@ -91,11 +91,13 @@ const musicFuncs = {
 				updateProgress();
 
 				$("#albumString").removeClass("isSingle");
-				/*if(data.album.type === "single") {
-					if(localStorage.getItem("setting_spotify_showSingleIfSingle") === "true") {
-						$("#albumString").addClass("isSingle");
+				if("type" in data.album) {
+					if(data.album.type === "single") {
+						if(localStorage.getItem("setting_spotify_showSingleIfSingle") === "true") {
+							$("#albumString").addClass("isSingle");
+						}
 					}
-				}*/
+				}
 
 				try {
 					let darkColor = data.album.art.colors.dark;
