@@ -240,7 +240,7 @@ body {
 }
 .right {
 	padding: var(--wrapper-margin);
-	padding-right: calc(var(--horizontal-offset) + var(--wrapper-margin));
+	padding-left: calc((var(--horizontal-offset) * -1) + var(--wrapper-margin));
 	direction: rtl;
 }
 #detailsWrapper {
