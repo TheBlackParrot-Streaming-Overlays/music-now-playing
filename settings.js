@@ -1,4 +1,4 @@
-const overlayRevision = 33;
+const overlayRevision = 34;
 const overlayRevisionTimestamp = 1772851510978;
 
 const settingsChannel = new BroadcastChannel("settings_overlay");
@@ -293,21 +293,15 @@ const settingUpdaters = {
 	},
 
 	scannableUsesCustomBGColor: function(value) {
-		if(!("colors" in currentSong)) {
-			return;
-		}
+		let colors = getActiveCoverColors();
 
 		if(value === "true") {
 			rootCSS().setProperty("--scannable-background-color", localStorage.getItem("setting_spotify_scannableCustomBGColor"));
 		} else {
-			if(currentSong.uri === null) {
-				return;
-			}
-
 			if(localStorage.getItem("setting_spotify_scannableUseBlack") === "true") {
-				rootCSS().setProperty("--scannable-background-color", currentSong.colors.light);
+				rootCSS().setProperty("--scannable-background-color", colors.light);
 			} else {
-				rootCSS().setProperty("--scannable-background-color", currentSong.colors.dark);
+				rootCSS().setProperty("--scannable-background-color", colors.dark);
 			}			
 		}
 
@@ -315,31 +309,22 @@ const settingUpdaters = {
 	},
 
 	scannableUseBlack: function(value) {
-		if(!("colors" in currentSong)) {
-			return;
-		}
+		let colors = getActiveCoverColors();
 
-		if(currentSong.uri === null) {
-			return;
-		}
 		if(localStorage.getItem("setting_spotify_scannableUsesCustomBGColor") === "true") {
 			return;
 		}
 
 		if(value === "true") {
-			rootCSS().setProperty("--scannable-background-color", currentSong.colors.light);
+			rootCSS().setProperty("--scannable-background-color", colors.light);
 		} else {
-			rootCSS().setProperty("--scannable-background-color", currentSong.colors.dark);
+			rootCSS().setProperty("--scannable-background-color", colors.dark);
 		}
 
 		determineScannableFGColor(currentSong);
 	},
 
 	scannableCustomBGColor: function(value) {
-		if(!("colors" in currentSong)) {
-			return;
-		}
-
 		if(localStorage.getItem("setting_spotify_scannableUsesCustomBGColor") === "false") {
 			return;
 		}
@@ -350,10 +335,6 @@ const settingUpdaters = {
 	},
 
 	scannableFGColor: function(value) {
-		if(!("colors" in currentSong)) {
-			return;
-		}
-
 		rootCSS().setProperty("--scannable-foreground-color", value);
 		determineScannableFGColor(currentSong);
 	},

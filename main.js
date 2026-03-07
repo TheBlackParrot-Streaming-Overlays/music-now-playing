@@ -51,10 +51,30 @@ function updateMarquee() {
 	}
 }
 
-function determineScannableFGColor(data) {
-	if(currentSong.uri === null) {
-		return;
+function getActiveCoverColors() {
+	let colors = {};
+	try {
+		colors = currentSong.colors;
+	} catch(err) {
+		try {
+			colors = currentSong.album.art.colors;
+		} catch(err) {
+			// ignored
+		}
 	}
+
+	if(typeof colors === "undefined") {
+		// assume defaults
+		return {
+			light: localStorage.getItem("setting_spotify_scannableCustomBGColor"),
+			dark: localStorage.getItem("setting_spotify_scannableCustomBGColor")
+		};
+	}
+
+	return colors;
+}
+
+function determineScannableFGColor(data) {
 	if("album" in currentSong) {
 		if("art" in currentSong.album) {
 			if(!("colors" in currentSong.album.art) && !("colors" in currentSong)) {
