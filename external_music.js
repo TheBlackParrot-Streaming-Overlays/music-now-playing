@@ -50,8 +50,8 @@ const musicFuncs = {
 							const artistElement = $(`<div class="individualArtist"></div>`);
 
 							if(artist.image) {
-								const artistImage = $(`<img class="artistImage"/>`);
-								artistImage.attr("src", artist.image);
+								const artistImage = $(`<div class="artistImage"></div>`);
+								artistImage.css("background-image", `url('${artist.image}')`);
 								artistElement.append(artistImage);
 							}
 
