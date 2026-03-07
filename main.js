@@ -24,6 +24,11 @@ function updateMarquee() {
 
 		if(childWidth > parentWidth) {
 			$("#title").addClass("left");
+			if($("#wrapper").hasClass("right")) {
+				$("#title").css("justify-content", "end");
+			} else {
+				$("#title").css("justify-content", "initial");
+			}
 
 			$("#titleString").bind('finished', function() {
 				$("#titleString").marquee('pause');
@@ -40,6 +45,7 @@ function updateMarquee() {
 				gap: parseInt(localStorage.getItem("setting_spotify_marqueeGap"))
 			});
 		} else {
+			$("#title").css("justify-content", "initial");
 			$("#title").removeClass("left");
 		}
 	}

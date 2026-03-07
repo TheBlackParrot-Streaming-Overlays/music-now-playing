@@ -233,12 +233,12 @@ body {
 	padding-bottom: var(--wrapper-padding-bottom);
 	align-items: center;
 }
-.left {
+#wrapper[class="left"] {
 	padding: var(--wrapper-margin);
 	padding-left: calc(var(--horizontal-offset) + var(--wrapper-margin));
 	direction: ltr;
 }
-.right {
+#wrapper[class="right"] {
 	padding: var(--wrapper-margin);
 	padding-left: calc((var(--horizontal-offset) * -1) + var(--wrapper-margin));
 	direction: rtl;
